@@ -51,8 +51,11 @@
             />
           </mat-form-field>
         </div>
+        <mat-error *ngIf="item.errors && item.get('name').touched">
+          {{ getErrorMessage(item.errors) }}
+        </mat-error>
       </div>
-      <button type="submit" mat-raised-button>
+      <button type="submit" mat-raised-button [disabled]="!recipe.valid">
         add
       </button>
     </form>

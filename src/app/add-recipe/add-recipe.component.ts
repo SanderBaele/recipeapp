@@ -10,6 +10,16 @@ import {
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Ingredient } from '../ingredient.model';
 
+function validateIngredientName(control: FormGroup): { [key: string]: any } {
+  if (
+    control.get('amount').value.length >= 1 &&
+    control.get('name').value.length < 2
+  ) {
+    return { amountNoName: true };
+  }
+  return null;
+}
+
 @Component({
   selector: 'app-add-recipe',
   templateUrl: './add-recipe.component.html',
@@ -25,6 +35,7 @@ export class AddRecipeComponent implements OnInit {
   get ingredients(): FormArray {
     return <FormArray>this.recipe.get('ingredients');
   }
+
   ngOnInit() {
     this.recipe = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -40,6 +51,12 @@ export class AddRecipeComponent implements OnInit {
         // if the last entry's name is typed, add a new empty one
         // if we're removing an entry's name, and there is an empty one after that one, remove the empty one
         const lastElement = ingList[ingList.length - 1];
+
+        // if (lastElement.amount.length) {
+        //   (this.ingredients.controls[0] as FormGroup).updateValueAndValidity({
+        //     emitEvent: false
+        //   });
+        // }
         if (lastElement.name && lastElement.name.length > 2) {
           this.ingredients.push(this.createIngredients());
         } else if (ingList.length >= 2) {
@@ -57,11 +74,14 @@ export class AddRecipeComponent implements OnInit {
   }
 
   createIngredients(): FormGroup {
-    return this.fb.group({
-      amount: [''],
-      unit: [''],
-      name: ['', [Validators.required, Validators.minLength(3)]]
-    });
+    return this.fb.group(
+      {
+        amount: [''],
+        unit: [''],
+        name: ['']
+      },
+      { validator: validateIngredientName }
+    );
   }
 
   onSubmit() {
@@ -71,12 +91,17 @@ export class AddRecipeComponent implements OnInit {
   }
 
   getErrorMessage(errors: any) {
+    if (!errors) {
+      return null;
+    }
     if (errors.required) {
       return 'is required';
     } else if (errors.minlength) {
       return `needs at least ${
         errors.minlength.requiredLength
       } characters (got ${errors.minlength.actualLength})`;
+    } else if (errors.amountNoName) {
+      return `if amount is set you must set a name`;
     }
   }
 }
