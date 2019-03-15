@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RECIPES } from './mock-recipes';
 import { Recipe } from './recipe.model';
 import { Observable, Subject, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -19,6 +19,11 @@ export class RecipeDataService {
       catchError(error => {
         this.loadingError$.next(error.statusText);
         return of();
+      }),
+      tap((x: any[]) => {
+        for (const y of x) {
+          console.log(y);
+        }
       }),
       map((list: any[]): Recipe[] => list.map(Recipe.fromJSON))
     );

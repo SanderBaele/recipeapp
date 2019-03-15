@@ -8,6 +8,7 @@
         placeholder="filter"
         type="text"
         #filter
+        data-cy="filterInput"
       />
     </mat-form-field>
   </mat-card>
@@ -25,13 +26,16 @@
         fxFlex="0 0 calc(25%-0.5%)"
         fxFlex.xs="100%"
       >
-        <app-recipe [recipe]="recipe"></app-recipe>
+        <app-recipe [recipe]="recipe" data-cy="recipeCard"></app-recipe>
       </div>
     </div>
   </div>
   <ng-template #loadingOrError>
     <mat-card>
-      <mat-error *ngIf="(loadingError$ | async) as errorMessage; else loading">
+      <mat-error
+        data-cy="appError"
+        *ngIf="(loadingError$ | async) as errorMessage; else loading"
+      >
         Error loading the recipe list: {{ errorMessage }}. <br />Please try
         again later.
       </mat-error>
