@@ -21,6 +21,7 @@ import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { RecipeFilterPipe } from './recipe-filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RecipeListComponent } from './recipe-list/recipe-list.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     RecipeComponent,
     IngredientComponent,
     AddRecipeComponent,
-    RecipeFilterPipe
+    RecipeFilterPipe,
+    RecipeListComponent
   ],
   imports: [
     BrowserModule,

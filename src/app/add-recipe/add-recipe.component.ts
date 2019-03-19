@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Ingredient } from '../ingredient.model';
+import { RecipeDataService } from '../recipe-data.service';
 
 function validateIngredientName(control: FormGroup): { [key: string]: any } {
   if (
@@ -26,11 +27,13 @@ function validateIngredientName(control: FormGroup): { [key: string]: any } {
   styleUrls: ['./add-recipe.component.css']
 })
 export class AddRecipeComponent implements OnInit {
-  @Output() public newRecipe = new EventEmitter<Recipe>();
   public recipe: FormGroup;
   public readonly unitTypes = ['Liter', 'Gram', 'Tbsp', 'Pcs'];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private _recipeDataService: RecipeDataService
+  ) {}
 
   get ingredients(): FormArray {
     return <FormArray>this.recipe.get('ingredients');
@@ -87,7 +90,10 @@ export class AddRecipeComponent implements OnInit {
   onSubmit() {
     let ingredients = this.recipe.value.ingredients.map(Ingredient.fromJSON);
     ingredients = ingredients.filter(ing => ing.name.length > 2);
-    this.newRecipe.emit(new Recipe(this.recipe.value.name, ingredients));
+
+    this._recipeDataService
+      .addNewRecipe(new Recipe(this.recipe.value.name, ingredients))
+      .subscribe();
   }
 
   getErrorMessage(errors: any) {
