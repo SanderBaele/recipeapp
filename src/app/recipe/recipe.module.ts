@@ -10,6 +10,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../material/material.module';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
+import { RecipeResolver } from './recipe-resolver';
+import { RouterModule } from '@angular/router';
+
+const routes = [
+  { path: 'recipe/list', component: RecipeListComponent },
+  { path: 'recipe/add', component: AddRecipeComponent },
+  {
+    path: 'recipe/:id',
+    component: RecipeDetailComponent,
+    resolve: { recipe: RecipeResolver }
+  }
+];
 
 @NgModule({
   declarations: [
@@ -20,6 +32,12 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
     RecipeListComponent,
     RecipeDetailComponent
   ],
-  imports: [CommonModule, MaterialModule, HttpClientModule, ReactiveFormsModule]
+  imports: [
+    CommonModule,
+    MaterialModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes)
+  ]
 })
 export class RecipeModule {}

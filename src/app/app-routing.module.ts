@@ -7,14 +7,7 @@ import { RecipeDetailComponent } from './recipe/recipe-detail/recipe-detail.comp
 import { RecipeResolver } from './recipe/recipe-resolver';
 
 const appRoutes: Routes = [
-  { path: 'recipe-list', component: RecipeListComponent },
-  { path: 'add-recipe', component: AddRecipeComponent },
-  {
-    path: 'recipe-detail/:id',
-    component: RecipeDetailComponent,
-    resolve: { recipe: RecipeResolver }
-  },
-  { path: '', redirectTo: 'recipe-list', pathMatch: 'full' },
+  { path: '', redirectTo: 'recipe/list', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
