@@ -25,17 +25,10 @@ import { RecipeFilterPipe } from './recipe-filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
-import { RouterModule, Routes } from '@angular/router';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-
-const appRoutes: Routes = [
-  { path: 'recipe-list', component: RecipeListComponent },
-  { path: 'add-recipe', component: AddRecipeComponent },
-  { path: '', redirectTo: 'recipe-list', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
-];
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -64,10 +57,10 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes),
     LayoutModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
