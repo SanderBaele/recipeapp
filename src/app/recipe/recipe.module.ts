@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../material/material.module';
+import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MaterialModule } from '../material/material.module';
     IngredientComponent,
     AddRecipeComponent,
     RecipeFilterPipe,
-    RecipeListComponent
+    RecipeListComponent,
+    RecipeDetailComponent
   ],
   imports: [CommonModule, MaterialModule, HttpClientModule, ReactiveFormsModule]
 })

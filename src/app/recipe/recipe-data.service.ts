@@ -17,12 +17,7 @@ export class RecipeDataService {
     return this.http.get(`${environment.apiUrl}/recipes/`).pipe(
       catchError(error => {
         this.loadingError$.next(error.statusText);
-        return of();
-      }),
-      tap((x: any[]) => {
-        for (const y of x) {
-          console.log(y);
-        }
+        return of(null);
       }),
       map((list: any[]): Recipe[] => list.map(Recipe.fromJSON))
     );
@@ -30,5 +25,12 @@ export class RecipeDataService {
 
   addNewRecipe(recipe: Recipe) {
     return this.http.post(`${environment.apiUrl}/recipes/`, recipe.toJSON());
+  }
+
+  getRecipe$(id): Observable<Recipe> {
+    console.log(`${environment.apiUrl}/recipes/${id}`);
+    return this.http
+      .get(`${environment.apiUrl}/recipes/${id}`)
+      .pipe(map((rec: any): Recipe => Recipe.fromJSON(rec)));
   }
 }
