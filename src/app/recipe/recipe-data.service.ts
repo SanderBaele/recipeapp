@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RECIPES } from './mock-recipes';
 import { Recipe } from './recipe.model';
 import { Observable, Subject, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
