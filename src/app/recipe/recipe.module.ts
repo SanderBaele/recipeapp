@@ -14,10 +14,10 @@ import { RecipeResolver } from './recipe-resolver';
 import { RouterModule } from '@angular/router';
 
 const routes = [
-  { path: 'recipe/list', component: RecipeListComponent },
-  { path: 'recipe/add', component: AddRecipeComponent },
+  { path: 'list', component: RecipeListComponent },
+  { path: 'add', component: AddRecipeComponent },
   {
-    path: 'recipe/:id',
+    path: ':id',
     component: RecipeDetailComponent,
     resolve: { recipe: RecipeResolver }
   }
@@ -38,6 +38,7 @@ const routes = [
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
-  ]
+  ],
+  providers: [HttpClientModule]
 })
 export class RecipeModule {}

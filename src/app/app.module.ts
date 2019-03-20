@@ -9,13 +9,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { MaterialModule } from './material/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, MainNavComponent, PageNotFoundComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RecipeModule,
+    HttpClientModule,
+    // RecipeModule,
     AppRoutingModule,
     MaterialModule
   ],
