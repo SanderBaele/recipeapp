@@ -15,8 +15,8 @@ export class RecipeListComponent implements OnInit {
 
   private _fetchRecipes$: Observable<Recipe[]> = this._recipeDataService
     .recipes$;
-
   public loadingError$ = this._recipeDataService.loadingError$;
+
   constructor(private _recipeDataService: RecipeDataService) {
     this.filterRecipe$
       .pipe(
