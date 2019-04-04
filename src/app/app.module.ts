@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent, MainNavComponent, PageNotFoundComponent],
@@ -17,8 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    UserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
