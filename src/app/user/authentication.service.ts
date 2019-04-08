@@ -54,8 +54,7 @@ export class AuthenticationService {
         { responseType: 'text' }
       )
       .pipe(
-        map((res: any) => {
-          const token = res;
+        map((token: any) => {
           if (token) {
             localStorage.setItem(this._tokenKey, token);
             this._user$.next(email);
@@ -70,7 +69,7 @@ export class AuthenticationService {
   logout() {
     if (this.user$.getValue()) {
       localStorage.removeItem(this._tokenKey);
-      setTimeout(() => this._user$.next(null));
+      this._user$.next(null);
     }
   }
 
@@ -78,8 +77,7 @@ export class AuthenticationService {
     return this.http
       .post(`${environment.apiUrl}/account/register`, { email, password })
       .pipe(
-        map((res: any) => {
-          const token = res.token;
+        map((token: any) => {
           if (token) {
             localStorage.setItem(this._tokenKey, token);
             this._user$.next(email);
