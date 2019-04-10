@@ -10,13 +10,12 @@ import {
 } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
-function passwordValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } => {
-    console.log(control.value);
-    return control.value.length < 12
-      ? { passwordTooShort: { value: control.value.length } }
-      : null;
-  };
+function comparePasswords(control: AbstractControl): { [key: string]: any } {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+  return password.value === confirmPassword.value
+    ? null
+    : { passwordsDiffer: true };
 }
 
 @Component({
@@ -42,7 +41,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('on submt');
     this.authService
       .login(this.user.value.username, this.user.value.password)
       .subscribe(

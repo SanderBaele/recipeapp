@@ -28,7 +28,6 @@ export class RecipeDataService {
   }
 
   getRecipe$(id): Observable<Recipe> {
-    console.log(`${environment.apiUrl}/recipes/${id}`);
     return this.http
       .get(`${environment.apiUrl}/recipes/${id}`)
       .pipe(map((rec: any): Recipe => Recipe.fromJSON(rec)));
