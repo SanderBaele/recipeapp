@@ -20,6 +20,21 @@ function comparePasswords(control: AbstractControl): { [key: string]: any } {
     : { passwordsDiffer: true };
 }
 
+function serverSideValidateUsername(
+  checkAvailabilityFn: (n: string) => Observable<boolean>
+): ValidatorFn {
+  return (control: AbstractControl): Observable<{ [key: string]: any }> => {
+    return checkAvailabilityFn(control.value).pipe(
+      map(available => {
+        if (available) {
+          return null;
+        }
+        return { userAlreadyExists: true };
+      })
+    );
+  };
+}
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -39,10 +54,10 @@ export class RegisterComponent implements OnInit {
     this.user = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      username: [
+      email: [
         '',
         [Validators.required, Validators.email],
-        this.serverSideValidateUsername()
+        serverSideValidateUsername(this.authService.checkUserNameAvailability)
       ],
       passwordGroup: this.fb.group(
         {
@@ -52,19 +67,6 @@ export class RegisterComponent implements OnInit {
         { validator: comparePasswords }
       )
     });
-  }
-
-  serverSideValidateUsername(): ValidatorFn {
-    return (control: AbstractControl): Observable<{ [key: string]: any }> => {
-      return this.authService.checkUserNameAvailability(control.value).pipe(
-        map(available => {
-          if (available) {
-            return null;
-          }
-          return { userAlreadyExists: true };
-        })
-      );
-    };
   }
 
   getErrorMessage(errors: any) {
@@ -91,7 +93,7 @@ export class RegisterComponent implements OnInit {
       .register(
         this.user.value.firstname,
         this.user.value.lastname,
-        this.user.value.username,
+        this.user.value.email,
         this.user.value.passwordGroup.password
       )
       .subscribe(
@@ -111,11 +113,11 @@ export class RegisterComponent implements OnInit {
           console.log(err);
           if (err.error instanceof Error) {
             this.errorMsg = `Error while trying to login user ${
-              this.user.value.username
+              this.user.value.email
             }: ${err.error.message}`;
           } else {
             this.errorMsg = `Error ${err.status} while trying to login user ${
-              this.user.value.username
+              this.user.value.email
             }: ${err.error}`;
           }
         }

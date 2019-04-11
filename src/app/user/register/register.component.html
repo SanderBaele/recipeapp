@@ -45,12 +45,12 @@
             placeholder="email"
             aria-label="email"
             data-cy="register-email"
-            formControlName="username"
+            formControlName="email"
           />
           <mat-error
-            *ngIf="user.get('username').errors && user.get('username').touched"
+            *ngIf="user.get('email').errors && user.get('email').touched"
           >
-            {{ getErrorMessage(user.get('username').errors) }}
+            {{ getErrorMessage(user.get('email').errors) }}
           </mat-error>
         </mat-form-field>
         <span fxLayout="column" formGroupName="passwordGroup">
