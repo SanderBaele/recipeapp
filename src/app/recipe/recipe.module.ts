@@ -39,6 +39,6 @@ const routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  providers: [HttpClientModule]
+  providers: []
 })
 export class RecipeModule {}
