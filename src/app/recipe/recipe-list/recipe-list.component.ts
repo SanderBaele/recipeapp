@@ -15,6 +15,7 @@ export class RecipeListComponent implements OnInit {
   public filterRecipe$ = new Subject<string>();
   @ViewChild('filter') filterInput;
 
+  public recipes: Recipe[];
   private _fetchRecipes$: Observable<Recipe[]> = this._recipeDataService
     .recipes$;
   public loadingError$ = this._recipeDataService.loadingError$;
@@ -29,7 +30,7 @@ export class RecipeListComponent implements OnInit {
     this.filterRecipe$
       .pipe(
         distinctUntilChanged(),
-        debounceTime(400)
+        debounceTime(250)
       )
       .subscribe(val => {
         const params = val ? { queryParams: { filter: val } } : undefined;
@@ -37,14 +38,12 @@ export class RecipeListComponent implements OnInit {
       });
 
     this._route.queryParams.subscribe(params => {
-      this.filterRecipeName = params['filter'];
+      this._recipeDataService
+        .getRecipes$(params['filter'])
+        .subscribe(val => (this.recipes = val));
       if (params['filter']) {
         this.filterInput.nativeElement.value = params['filter'];
       }
     });
-  }
-
-  get recipes$() {
-    return this._fetchRecipes$;
   }
 }
