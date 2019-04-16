@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { RecipeDataService } from '../recipe-data.service';
 import { Observable, Subject } from 'rxjs';
 import { Recipe } from '../recipe.model';
@@ -12,22 +13,36 @@ import { distinctUntilChanged, debounceTime, map } from 'rxjs/operators';
 export class RecipeListComponent implements OnInit {
   public filterRecipeName: string;
   public filterRecipe$ = new Subject<string>();
+  @ViewChild('filter') filterInput;
 
   private _fetchRecipes$: Observable<Recipe[]> = this._recipeDataService
     .recipes$;
   public loadingError$ = this._recipeDataService.loadingError$;
 
-  constructor(private _recipeDataService: RecipeDataService) {
+  constructor(
+    private _recipeDataService: RecipeDataService,
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
     this.filterRecipe$
       .pipe(
         distinctUntilChanged(),
-        debounceTime(400),
-        map(val => val.toLowerCase())
+        debounceTime(400)
       )
-      .subscribe(val => (this.filterRecipeName = val));
-  }
+      .subscribe(val => {
+        const params = val ? { queryParams: { filter: val } } : undefined;
+        this._router.navigate(['/recipe/list'], params);
+      });
 
-  ngOnInit() {}
+    this._route.queryParams.subscribe(params => {
+      this.filterRecipeName = params['filter'];
+      if (params['filter']) {
+        this.filterInput.nativeElement.value = params['filter'];
+      }
+    });
+  }
 
   get recipes$() {
     return this._fetchRecipes$;
