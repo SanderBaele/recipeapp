@@ -17,7 +17,6 @@ export class RecipeComponent implements OnInit {
   ngOnInit() {}
 
   adjustRating(clickObj: any): void {
-    this.recipe.rating = clickObj.rating;
     this._recipeDataService
       .rateRecipe(this.recipe, this.recipe.rating)
       .subscribe(
